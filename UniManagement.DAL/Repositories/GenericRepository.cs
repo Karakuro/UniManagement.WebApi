@@ -36,7 +36,7 @@ namespace UniManagement.DAL.Repositories
 
         public T? Get(Func<T, bool> query, string include)
         {
-            return _ctx.Set<T>().Include(include).SingleOrDefault(query)
+            return _ctx.Set<T>().Include(include).SingleOrDefault(query);
         }
 
         //public T? Get(int[] ids)
