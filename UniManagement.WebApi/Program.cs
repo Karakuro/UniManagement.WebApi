@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UniManagement.DAL.Data;
+using UniManagement.DAL.Repositories;
 using UniManagement.WebApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 string connStr = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddSqlServer<UniDbContext>(connStr);
 builder.Services.AddSingleton<Mapper>();
+builder.Services.AddScoped<IRepository<Student>, StudentRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

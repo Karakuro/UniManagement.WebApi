@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniManagement.DAL.Data;
+using UniManagement.DAL.Repositories;
 using UniManagement.WebApi.Models;
 
 namespace UniManagement.WebApi.Controllers
@@ -10,29 +11,27 @@ namespace UniManagement.WebApi.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly UniDbContext _ctx;
+        //private readonly UniDbContext _ctx;
         private readonly Mapper _map;
+        private IRepository<Student> _repo;
 
-        public StudentController(UniDbContext ctx, Mapper mapper)
+        public StudentController(IRepository<Student> repo, Mapper mapper)
         {
-            _ctx = ctx;
+            _repo = repo;
             _map = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_ctx.Students.ToList().ConvertAll(_map.MapEntityToModel));
+            return Ok(_repo.GetAll().ConvertAll(_map.MapEntityToModel));
         }
 
         [HttpGet]
         [Route("{id:int}")]
         public IActionResult Get(int id)
         {
-            Student? stud = _ctx.Students
-                //.Include(s => s.Results)
-                .Include("Results.Exam")
-                .SingleOrDefault(s => s.StudentId == id);
+            Student? stud = _repo.Get(s => s.StudentId == id, "Results.Exam");
             if (stud == null)
                 return BadRequest();
 
@@ -43,9 +42,8 @@ namespace UniManagement.WebApi.Controllers
         public IActionResult Create(StudentModel student)
         {
             student.Id = 0;
-            _ctx.Students.Add(_map.MapModelToEntity(student));
-            _ctx.SaveChanges();
-            return Ok(student);
+            var result = _repo.Create(_map.MapModelToEntity(student));
+            return Ok(_map.MapEntityToModel(result));
         }
     }
 }
