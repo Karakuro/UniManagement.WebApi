@@ -14,5 +14,6 @@ namespace UniManagement.DAL.Repositories
         T Create(T entity);
         bool Update(T entity);
         bool Delete(int id);
+        List<T> GetByFilter(Func<T, bool> predicate);
     }
 }

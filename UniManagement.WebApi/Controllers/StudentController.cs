@@ -38,6 +38,14 @@ namespace UniManagement.WebApi.Controllers
             return Ok(_map.MapEntityToModel(stud));
         }
 
+        [HttpGet]
+        [Route("Active")]
+        public IActionResult GetActiveStudents()
+        {
+            List<Student> result = _repo.GetByFilter(s => s.Results.Count > 0);
+            return Ok(result);
+        }
+
         [HttpPost]
         public IActionResult Create(StudentModel student)
         {

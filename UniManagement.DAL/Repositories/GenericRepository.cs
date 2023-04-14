@@ -39,6 +39,11 @@ namespace UniManagement.DAL.Repositories
             return _ctx.Set<T>().Include(include).SingleOrDefault(query);
         }
 
+        public List<T> GetByFilter(Func<T, bool> predicate)
+        {
+            return _ctx.Set<T>().Where(predicate).ToList();
+        }
+
         //public T? Get(int[] ids)
         //{
         //    return _ctx.Find<T>(ids);

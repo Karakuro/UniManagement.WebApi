@@ -7,41 +7,11 @@ using UniManagement.DAL.Data;
 
 namespace UniManagement.DAL.Repositories
 {
-    public class ExamRepository : IRepository<Exam>
+    public class ExamRepository : GenericRepository<Exam>, IRepository<Exam>
     {
-        private readonly UniDbContext _ctx;
 
-        public ExamRepository(UniDbContext ctx)
+        public ExamRepository(UniDbContext ctx) : base(ctx)
         {
-            _ctx = ctx;
-        }
-
-        public List<Exam> GetAll()
-        {
-            return _ctx.Exams.ToList();
-        }
-
-        public Exam? Get(int id)
-        {
-            return _ctx.Exams.SingleOrDefault(e => e.ExamId == id);
-        }
-
-        public Exam Create(Exam exam)
-        {
-            _ctx.Exams.Add(exam);
-            _ctx.SaveChanges();
-            return exam;
-        }
-
-        public bool Delete(int id)
-        {
-            Exam? exam = Get(id);
-            if(exam != null)
-            {
-                _ctx.Remove(exam);
-                return _ctx.SaveChanges() > 0;
-            }
-            return false;
         }
 
         public bool Update(Exam exam)
