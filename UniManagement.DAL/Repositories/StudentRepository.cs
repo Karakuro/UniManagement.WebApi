@@ -13,6 +13,11 @@ namespace UniManagement.DAL.Repositories
         {
         }
 
+        public void DeleteAll()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Update(Student entity)
         {
             throw new NotImplementedException();
