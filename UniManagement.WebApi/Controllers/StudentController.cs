@@ -13,9 +13,9 @@ namespace UniManagement.WebApi.Controllers
     {
         //private readonly UniDbContext _ctx;
         private readonly Mapper _map;
-        private IRepository<Student> _repo;
+        private IStudentRepository _repo;
 
-        public StudentController(IRepository<Student> repo, Mapper mapper)
+        public StudentController(IStudentRepository repo, Mapper mapper)
         {
             _repo = repo;
             _map = mapper;

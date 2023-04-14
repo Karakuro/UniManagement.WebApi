@@ -7,7 +7,7 @@ using UniManagement.DAL.Data;
 
 namespace UniManagement.DAL.Repositories
 {
-    public class StudentRepository : GenericRepository<Student>, IRepository<Student>
+    public class StudentRepository : GenericRepository<Student>, IStudentRepository
     {
         public StudentRepository(UniDbContext ctx) : base(ctx)
         {

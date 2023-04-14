@@ -11,7 +11,11 @@ builder.Services.AddControllers();
 string connStr = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddSqlServer<UniDbContext>(connStr);
 builder.Services.AddSingleton<Mapper>();
-builder.Services.AddScoped<IRepository<Student>, StudentRepository>();
+
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IRepository<Exam>, ExamRepository>();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
