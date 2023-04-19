@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniManagement.DAL.Data;
@@ -22,6 +23,7 @@ namespace UniManagement.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult GetAll()
         {
             return Ok(_repo.GetAll().ConvertAll(_map.MapEntityToModel));
@@ -47,6 +49,7 @@ namespace UniManagement.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Admin)]
         public IActionResult Create(StudentModel student)
         {
             student.Id = 0;

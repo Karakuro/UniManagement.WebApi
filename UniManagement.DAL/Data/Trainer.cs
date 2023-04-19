@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace UniManagement.DAL.Data
         public int TrainerId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+        public string FiscalCode { get; set; }
         public List<Exam> Exams { get; set; }
     }
 }
