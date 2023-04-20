@@ -41,8 +41,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddSingleton<Mapper>();
 
-builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-builder.Services.AddScoped<IRepository<Exam>, ExamRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

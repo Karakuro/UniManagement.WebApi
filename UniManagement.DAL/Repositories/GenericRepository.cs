@@ -8,13 +8,15 @@ using UniManagement.DAL.Data;
 
 namespace UniManagement.DAL.Repositories
 {
-    public class GenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly UniDbContext _ctx;
+        internal DbSet<T> _dbSet {  get; set; }
 
         public GenericRepository(UniDbContext ctx)
         {
             _ctx = ctx;
+            _dbSet = _ctx.Set<T>();
         }
 
         public T Create(T entity)
@@ -36,12 +38,12 @@ namespace UniManagement.DAL.Repositories
 
         public T? Get(Func<T, bool> query, string include)
         {
-            return _ctx.Set<T>().Include(include).SingleOrDefault(query);
+            return _dbSet.Include(include).SingleOrDefault(query);
         }
 
         public List<T> GetByFilter(Func<T, bool> predicate)
         {
-            return _ctx.Set<T>().Where(predicate).ToList();
+            return _dbSet.Where(predicate).ToList();
         }
 
         //public T? Get(int[] ids)
@@ -51,7 +53,18 @@ namespace UniManagement.DAL.Repositories
 
         public List<T> GetAll()
         {
-            return _ctx.Set<T>().ToList();
+            return _dbSet.ToList();
+        }
+
+        public void DeleteAll()
+        {
+            _dbSet.RemoveRange(_ctx.Set<T>().ToList());
+        }
+
+        public virtual bool Update(T entity)
+        {
+            _dbSet.Update(entity);
+            return _ctx.SaveChanges() > 0;
         }
     }
 }

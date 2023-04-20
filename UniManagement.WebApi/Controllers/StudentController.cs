@@ -14,9 +14,9 @@ namespace UniManagement.WebApi.Controllers
     {
         //private readonly UniDbContext _ctx;
         private readonly Mapper _map;
-        private IStudentRepository _repo;
+        private IUnitOfWork _repo;
 
-        public StudentController(IStudentRepository repo, Mapper mapper)
+        public StudentController(IUnitOfWork repo, Mapper mapper)
         {
             _repo = repo;
             _map = mapper;
@@ -26,14 +26,14 @@ namespace UniManagement.WebApi.Controllers
         [Authorize(Roles = UserRoles.Admin)]
         public IActionResult GetAll()
         {
-            return Ok(_repo.GetAll().ConvertAll(_map.MapEntityToModel));
+            return Ok(_repo.StudentRepo.GetAll().ConvertAll(_map.MapEntityToModel));
         }
 
         [HttpGet]
         [Route("{id:int}")]
         public IActionResult Get(int id)
         {
-            Student? stud = _repo.Get(s => s.StudentId == id, "Results.Exam");
+            Student? stud = _repo.StudentRepo.Get(s => s.StudentId == id, "Results.Exam");
             if (stud == null)
                 return BadRequest();
 
@@ -44,7 +44,7 @@ namespace UniManagement.WebApi.Controllers
         [Route("Active")]
         public IActionResult GetActiveStudents()
         {
-            List<Student> result = _repo.GetByFilter(s => s.Results.Count > 0);
+            List<Student> result = _repo.StudentRepo.GetByFilter(s => s.Results.Count > 0);
             return Ok(result);
         }
 
@@ -53,7 +53,7 @@ namespace UniManagement.WebApi.Controllers
         public IActionResult Create(StudentModel student)
         {
             student.Id = 0;
-            var result = _repo.Create(_map.MapModelToEntity(student));
+            var result = _repo.StudentRepo.Create(_map.MapModelToEntity(student));
             return Ok(_map.MapEntityToModel(result));
         }
     }

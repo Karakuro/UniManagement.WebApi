@@ -7,8 +7,12 @@ using UniManagement.DAL.Data;
 
 namespace UniManagement.DAL.Repositories
 {
-    public interface IStudentRepository : IRepository<Student>
+    public interface IUnitOfWork
     {
-        void DeleteAllStudents();
+        IStudentRepository StudentRepo { get; }
+        IRepository<Exam> ExamRepo { get; }
+        IRepository<ExamResult> ExamResultRepo { get; }
+
+        bool Commit();
     }
 }
