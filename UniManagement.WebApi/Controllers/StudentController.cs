@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UniManagement.DAL.Data;
@@ -55,6 +56,40 @@ namespace UniManagement.WebApi.Controllers
             student.Id = 0;
             var result = _repo.StudentRepo.Create(_map.MapModelToEntity(student));
             return Ok(_map.MapEntityToModel(result));
+        }
+
+        [HttpPatch]
+        [Route("Update")]
+        public IActionResult Update(StudentModel student)
+        {
+            if (_repo.StudentRepo.Update(_map.MapModelToEntity(student)))
+                return Ok();
+            return BadRequest();
+        }
+
+        [HttpPatch]
+        [Route("Update/{id}")]
+        public IActionResult Update(int id, [FromBody] JsonPatchDocument<StudentModel> patchDocument)
+        {
+            Student? old = _repo.StudentRepo.Get(id);
+            if(old == null)
+                return BadRequest();
+            StudentModel newStud = _map.MapEntityToModel(old);
+            patchDocument.ApplyTo(newStud, ModelState);
+
+            _map.MapModelToEntity(newStud, ref old);
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if(_repo.StudentRepo.Update(old))
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

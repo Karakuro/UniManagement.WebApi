@@ -39,9 +39,14 @@ namespace UniManagement.WebApi.Models
         {
             Student entity = new Student();
             entity.StudentId = model.Id;
-            entity.Name = model.Name;
-            entity.Surname= model.Surname;
+            MapModelToEntity(model, ref entity);
             return entity;
+        }
+
+        public void MapModelToEntity(StudentModel model, ref Student entity)
+        {
+            entity.Name = model.Name;
+            entity.Surname = model.Surname;
         }
     }
 }

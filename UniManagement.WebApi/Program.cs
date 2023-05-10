@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 string connStr = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddSqlServer<UniDbContext>(connStr);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
